@@ -5,7 +5,7 @@ module Pronto
     def initialize(patches, commit = nil)
       @patches = patches
       @commit = commit
-      @config = Config.new
+      @config = Config.instance
     end
 
     def self.runners

@@ -2,7 +2,7 @@ module Pronto
   class Client
     def initialize(repo)
       @repo = repo
-      @config = Config.new
+      @config = Config.instance
       @comment_cache = {}
       @pull_id_cache = {}
     end

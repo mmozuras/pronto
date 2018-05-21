@@ -1,6 +1,7 @@
 module Pronto
   class ConfigFile
     DEFAULT_MESSAGE_FORMAT = '%{msg}'.freeze
+    DEFAULT_FILE_PATH = '.pronto.yml'.freeze
 
     EMPTY = {
       'all' => {
@@ -35,12 +36,14 @@ module Pronto
       'format' => DEFAULT_MESSAGE_FORMAT
     }.freeze
 
-    def initialize(path = '.pronto.yml')
+    def initialize(path = nil)
       @path = path
+      raise Pronto::Error, "configuration file `#{@path}` missing" if @path && !File.exist?(@path)
+      @path = DEFAULT_FILE_PATH if !@path && File.exist?(DEFAULT_FILE_PATH)
     end
 
     def to_h
-      hash = File.exist?(@path) ? YAML.load_file(@path) : {}
+      hash = @path ? YAML.load_file(@path) : {}
       deep_merge(hash)
     end
 

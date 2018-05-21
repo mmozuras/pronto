@@ -3,7 +3,7 @@ module Pronto
     describe '#run' do
       subject { described_class.new(runners, config).run(patches) }
       let(:patches) { double(commit: nil, none?: false) }
-      let(:config) { Config.new }
+      let(:config) { Config.instance }
 
       context 'no runners' do
         let(:runners) { [] }

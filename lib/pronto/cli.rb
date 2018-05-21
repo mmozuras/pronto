@@ -14,6 +14,11 @@ module Pronto
 
     desc 'run', 'Run Pronto'
 
+    method_option :config,
+                  type: :string,
+                  default: ENV['PRONTO_CONFIG'],
+                  desc: 'Uses the specified config file.'
+
     method_option :'exit-code',
                   type: :boolean,
                   desc: 'Exits with non-zero code if there were any warnings/errors.'
@@ -46,6 +51,8 @@ module Pronto
                   desc: "Pick output formatters. Available: #{::Pronto::Formatter.names.join(', ')}"
 
     def run(path = nil)
+      ::Pronto::Config.instance.path = options[:config]
+
       gem_names = options[:runner].any? ? options[:runner] : ::Pronto::GemNames.new.to_a
       gem_names.each do |gem_name|
         require "pronto/#{gem_name}"

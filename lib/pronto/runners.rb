@@ -1,6 +1,6 @@
 module Pronto
   class Runners
-    def initialize(runners = Runner.runners, config = Config.new)
+    def initialize(runners = Runner.runners, config = Config.instance)
       @runners = runners
       @config = config
     end

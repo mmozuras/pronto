@@ -6,7 +6,7 @@ module Pronto
       end
 
       def config
-        @config ||= Config.new
+        @config ||= Config.instance
       end
     end
   end

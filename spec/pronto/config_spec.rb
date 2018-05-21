@@ -1,7 +1,24 @@
 module Pronto
   describe Config do
-    let(:config) { described_class.new(config_hash) }
+    let(:config) do
+      config = described_class.instance
+      config.config_hash = config_hash
+      config
+    end
+
     let(:config_hash) { {} }
+
+    describe '#path=' do
+      pending # TODO
+    end
+
+    describe '#config_hash=' do
+      pending # TODO
+    end
+
+    describe '#config_hash' do
+      pending # TODO
+    end
 
     describe '#github_slug' do
       subject { config.github_slug }
