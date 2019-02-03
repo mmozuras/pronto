@@ -12,7 +12,7 @@ module Pronto
 
       context 'success' do
         before { BitbucketClient.stub(:post).and_return(response) }
-        let(:response) { double('Response', success?: true) }
+        let(:response) { double('Response', success?: true, body: {}.to_json) }
         its(:success?) { should be_truthy }
       end
     end
@@ -24,7 +24,7 @@ module Pronto
 
       context 'success' do
         before { BitbucketClient.stub(:post).and_return(response) }
-        let(:response) { double('Response', success?: true) }
+        let(:response) { double('Response', success?: true, body: {}.to_json) }
         its(:success?) { should be_truthy }
       end
     end

@@ -42,19 +42,27 @@ module Pronto
     private
 
     def slug
-      return @config.bitbucket_slug if @config.bitbucket_slug
+      return bitbucket_slug if bitbucket_slug
       @slug ||= begin
         @repo.remote_urls.map do |url|
-          hostname = Regexp.escape(@config.bitbucket_hostname)
+          hostname = Regexp.escape(bitbucket_hostname)
           match = %r{.*#{hostname}(:|\/)(?<slug>.*?)(?:\.git)?\z}.match(url)
           match[:slug] if match
         end.compact.first
       end
     end
 
+    def bitbucket_hostname
+      @config.bitbucket_hostname
+    end
+
+    def bitbucket_slug
+      @config.bitbucket_slug
+    end
+
     def client
-      @client ||= BitbucketClient.new(@config.bitbucket_username,
-                                      @config.bitbucket_password)
+      @client ||= BitbucketClient.new(@config.bitbucket_key,
+                                      @config.bitbucket_secret)
     end
 
     def pull_id

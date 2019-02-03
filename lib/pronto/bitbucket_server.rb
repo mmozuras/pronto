@@ -15,9 +15,9 @@ module Pronto
     private
 
     def client
-      @client ||= BitbucketServerClient.new(@config.bitbucket_username,
-                                            @config.bitbucket_password,
-                                            @config.bitbucket_api_endpoint)
+      @client ||= BitbucketServerClient.new(@config.bitbucket_server_username,
+                                            @config.bitbucket_server_password,
+                                            @config.bitbucket_server_api_endpoint)
     end
 
     def pull
@@ -28,6 +28,14 @@ module Pronto
                     pr['fromRef']['displayId'] == @repo.branch
                   end
                 end
+    end
+
+    def bitbucket_hostname
+      @config.bitbucket_server_hostname
+    end
+
+    def bitbucket_slug
+      @config.bitbucket_server_slug
     end
   end
 end

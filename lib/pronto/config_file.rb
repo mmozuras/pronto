@@ -20,6 +20,14 @@ module Pronto
       },
       'bitbucket' => {
         'slug' => nil,
+        'key' => nil,
+        'secret' => nil,
+        'api_endpoint' => nil,
+        'auto_approve' => false,
+        'web_endpoint' => 'https://bitbucket.org/'
+      },
+      'bitbucket_server' => {
+        'slug' => nil,
         'username' => nil,
         'password' => nil,
         'api_endpoint' => nil,
