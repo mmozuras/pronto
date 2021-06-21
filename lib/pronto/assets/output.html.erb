@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+
+  <title>Code Analysis Report</title>
+  <style>
+    .logo {
+      width: 40px;
+      height: 40px;
+    }
+
+    .navbar-section h3 {
+      margin: 0 !important;
+    }
+
+    .copy-btn, .card-header {
+      cursor: pointer;
+    }
+
+    .code code {
+      background: rgb(247, 248, 220) !important;
+      line-height: 0.5;
+    }
+
+    .accordion[open] .accordion-body {
+      max-height: max-content !important;
+    }
+
+    header {
+      margin-bottom: 20px;
+    }
+
+    body {
+      font-size: 0.75rem !important;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="navbar bg-dark">
+    <section class="navbar-section">
+      <h3>Code Analysis Report</h3>
+    </section>
+    <section class="navbar-section">
+      <a href="https://github.com/dongnhzigexn/pronto" class="btn btn-link text-light">GitHub</a>
+    </section>
+  </header>
+  <div class="container">
+    <div class="panel bg-gray">
+      <div class="panel-header">
+        <div class="panel-title text-bold"><%= pluralize(files.values.flatten.count, 'offense', no_for_zero: true) %> detected:</div>
+      </div>
+      <div class="panel-body">
+        <ul>
+          <% files.each do |path, offenses| %>
+            <li>
+              <a href="#offense_<%= path %>"> <%= path %> </a>
+              <span class="chip"><%= pluralize(offenses.count, 'offense') %></span>
+              <span class="copy-btn tooltip tooltip-right" data-tooltip="Copy relative path"
+                data-clipboard-text="<%= path %>">
+                <i class=" icon icon-copy"></i>
+              </span>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+
+    <% files.each do |path, offenses| %>
+      <details class="card mt-2 accordion" id="offense_<%= path %>">
+        <summary class="accordition-header card-header bg-gray text-bold">
+          <%= path %>
+          <span class="chip">
+            <%= pluralize(offenses.count, 'offense') %>
+          </span>
+        </summary>
+        <div class="card-body accordion-body">
+          <% offenses.each do |offense| %>
+            <div class="report">
+              <div class="meta text-italic">
+                <span class="copy-btn tooltip tooltip-right"
+                      data-tooltip="Copy relative path"
+                      data-clipboard-text="<%= path %>:<%= offense.line.new_lineno %>">
+                  <a>Line #<%= offense.line.new_lineno %></a>
+                </span>
+                <%- message = "#{offense.level}: #{decorated_message(offense.msg)}" %>
+                <span class="message">
+                  <%= message %>
+                </span>
+                <span class="chip">
+                  <%= offense.runner.to_s.split('::').last %>
+                </span>
+              </div>
+              <pre class="code text-error"><code><%= offense.line.line.content.force_encoding('UTF-8') %></code></pre>
+            </div>
+          <% end %>
+        </div>
+      </details>
+    <% end %>
+  </div>
+  <script>
+    (function () {
+      var clipboard = new ClipboardJS('.copy-btn');
+      clipboard.on('success', function (e) {
+        buttons = document.getElementsByClassName('copy-btn');
+        for (let btn of buttons){
+          btn.dataset.tooltip = "Copy relative path"
+        }
+        e.trigger.dataset.tooltip = "Copied!"
+      });
+    })();
+  </script>
+</body>
+</html>
