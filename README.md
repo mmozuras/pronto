@@ -125,7 +125,7 @@ in order to avoid the rate limit of the providers.
 X = N / {PRONTO_WARNINGS_PER_REVIEW || warnings_per_review || 30})
 ```
 
-Note: In case no environment variable or config setting is specified in `.pronto.yml`, 
+Note: In case no environment variable or config setting is specified in `.pronto.yml`,
       a default value of `30` will be used.
 
 ```sh
@@ -164,7 +164,7 @@ Pronto.run('origin/master', '.', formatters)
 
 #### GitHub Actions Integration
 
-You can also run Pronto as a GitHub action. 
+You can also run Pronto as a GitHub action.
 
 Here's an example `.github/workflows/pronto.yml` workflow file using the `github_status` and `github_pr` formatters and running on each GitHub PR, with `pronto-rubocop` as the runner:
 
@@ -290,12 +290,22 @@ bitbucket:
 max_warnings: 150
 warnings_per_review: 30
 verbose: false
+runners: [rubocop, eslint] # only listed runners will be executed
+skip_runners: [reek] # all, except listed runners will be executed
 ```
 
 All properties that can be specified via `.pronto.yml`, can also be specified
 via environment variables. Their names will be the upcased path to the property.
 For example: `PRONTO_GITHUB_SLUG` or `PRONTO_GITLAB_API_PRIVATE_TOKEN`. Environment variables
 will always take precedence over values in configuration file.
+
+| Property              | Description                                                                          |
+|-----------------------|--------------------------------------------------------------------------------------|
+| `max_warnings`        | Limits the amount of warnings. Returns all warnings if option is skipped.            |
+| `runners`             | Runs only listed runners. Runs everything if option is skipped.                      |
+| `skip_runners`        | All, except listed runners will be executed. Runs everything if option is skipped.   |
+| `verbose`             | Outputs more information when set to `true`.                                         |
+| `warnings_per_review` | Limits the amount of warnings per review. Returns all warnings if option is skipped. |
 
 ### Message format
 

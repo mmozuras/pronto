@@ -129,5 +129,52 @@ module Pronto
         it { should == ConfigFile::DEFAULT_MESSAGE_FORMAT }
       end
     end
+
+    describe '#skip_runners' do
+      subject { config.skip_runners }
+
+      let(:env_variables) { {} }
+
+      before do
+        stub_const('ENV', env_variables)
+      end
+
+      context 'when runners are not skipped' do
+        it { should be_empty }
+      end
+
+      context 'when runners are skipped via ENV variable' do
+        let(:env_variables) { { 'PRONTO_SKIP_RUNNERS' => 'Runner,OtherRunner' } }
+
+        it { should == %w[Runner OtherRunner] }
+      end
+
+      context 'when runners are skipped via config file' do
+        let(:config_hash) { { 'skip_runners' => ['Runner'] } }
+
+        it { should == %w[Runner] }
+      end
+
+      context 'when runners are skipped via config file and ENV variable' do
+        let(:env_variables) { { 'PRONTO_SKIP_RUNNERS' => 'EnvRunner' } }
+        let(:config_hash) { { 'skip_runners' => %w[ConfigRunner] } }
+
+        it { should == %w[EnvRunner] }
+      end
+    end
+
+    describe '#runners' do
+      subject { config.runners }
+
+      context 'when there is an entry in the config file' do
+        let(:config_hash) { { 'runners' => ['Runner'] } }
+
+        it { should == %w[Runner] }
+      end
+
+      context 'when there is no entry in the config file' do
+        it { should be_empty }
+      end
+    end
   end
 end
