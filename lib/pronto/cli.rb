@@ -66,9 +66,9 @@ module Pronto
       repo_workdir = ::Rugged::Repository.discover(path).workdir
       relative     = path.sub(repo_workdir, '')
 
-      messages = Dir.chdir(repo_workdir) do
+      messages = Dir.chdir(path) do
         file = relative.length != path.length ? relative : nil
-        ::Pronto.run(commit, '.', formatters, file)
+        ::Pronto.run(commit, repo_workdir, formatters, file)
       end
       if options[:'exit-code']
         error_messages_count = messages.count { |m| m.level != :info }
