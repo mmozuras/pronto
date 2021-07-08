@@ -55,9 +55,9 @@ require 'pronto/formatter/null_formatter'
 require 'pronto/formatter/formatter'
 
 module Pronto
-  def self.run(commit = 'master', repo_path = '.',
+  def self.run(commit = nil, repo_path = '.',
                formatters = [Formatter::TextFormatter.new], file = nil)
-    commit ||= 'master'
+    commit ||= default_commit
 
     repo = Git::Repository.new(repo_path)
     options = { paths: [file] } if file
@@ -71,5 +71,9 @@ module Pronto
     end
 
     result
+  end
+
+  def self.default_commit
+    Config.new.default_commit
   end
 end

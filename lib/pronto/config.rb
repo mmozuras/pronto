@@ -11,6 +11,13 @@ module Pronto
       end
     end
 
+    def default_commit
+      default_commit =
+        ENV['PRONTO_DEFAULT_COMMIT'] ||
+        @config_hash.fetch('default_commit', 'master')
+      default_commit
+    end
+
     def consolidate_comments?
       consolidated =
         ENV['PRONTO_CONSOLIDATE_COMMENTS'] ||

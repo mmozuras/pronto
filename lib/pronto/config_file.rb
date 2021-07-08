@@ -31,6 +31,7 @@ module Pronto
       'text' => {
         'format' => '%{color_location} %{color_level}: %{msg}'
       },
+      'default_commit' => 'master',
       'runners' => [],
       'formatters' => [],
       'max_warnings' => nil,

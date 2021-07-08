@@ -3,6 +3,24 @@ module Pronto
     let(:config) { described_class.new(config_hash) }
     let(:config_hash) { {} }
 
+    describe '#default_commit' do
+      subject { config.default_commit }
+
+      context 'from env variable' do
+        before { stub_const('ENV', 'PRONTO_DEFAULT_COMMIT' => 'development') }
+        it { should == 'development' }
+      end
+
+      context 'from config hash' do
+        let(:config_hash) { { 'default_commit' => 'development' } }
+        it { should == 'development' }
+      end
+
+      context 'from default value' do
+        it { should == 'master' }
+      end
+    end
+
     describe '#github_slug' do
       subject { config.github_slug }
 

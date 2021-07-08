@@ -20,7 +20,6 @@ module Pronto
 
     method_option :commit,
                   type: :string,
-                  default: 'master',
                   aliases: '-c',
                   desc: 'Commit for the diff'
 
